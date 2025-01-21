@@ -1,50 +1,33 @@
+// Orders.js
 import { getProducts, getEmployees, getOrders } from "./database.js"
 
-// Get copy of state for use in this module
 const products = getProducts()
 const employees = getEmployees()
 const orders = getOrders()
 
-
-// Function whose responsibility is to find the product for an order
-const findproduct = (order, allProducts) => {
-    let orderProduct = null
-
-    for (const product of allProducts) {
-        if (product.id === order.productId) {
-            orderProduct = product
-        }
-    }
-
-    return orderProduct
+const findProduct = (order, allProducts) => {
+    return allProducts.find(product => product.id === order.productId)
 }
 
-// Function whose responsibility is to find the employee for an order
-const findemployee = (order, allEmployees) => {
-    let orderEmployee = null
-
-    for (const employee in allEmployees) {
-        if (employee.id === order.employeeId) {
-            orderEmployee = employee
-        }
-    }
-
-    return orderEmployee
+const findEmployee = (order, allEmployees) => {
+    return allEmployees.find(employee => employee.id === order.employeeId)
 }
 
 export const Orders = () => {
-    let html = ""
-    html = "<ul>"
+    let html = "<ul>"
 
     for (const order of orders) {
         const employee = findEmployee(order, employees)
-        const product = findProduct(order)
+        const product = findProduct(order, products)
 
-        html += `<li>${product.name} was sold by ${employee.name} on ${new Date(order.timestamp).toLocaleDateString()}</li>`
+        if (employee && product) {
+            html += `<li>${product.name} was sold by ${employee.name} on ${new Date(order.timestamp).toLocaleDateString()}</li>`
+        } else {
+            html += `<li>Unknown product or employee</li>`
+        }
     }
 
     html += "</ul>"
 
     return html
 }
-
