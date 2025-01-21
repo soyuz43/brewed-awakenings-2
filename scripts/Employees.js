@@ -1,3 +1,4 @@
+// Employees.js
 import { getEmployees } from "./database.js"
 
 const employees = getEmployees()
@@ -11,6 +12,5 @@ export const Employees = () => {
 
     html += "</ul>"
 
-    return htm
+    return html
 }
-
